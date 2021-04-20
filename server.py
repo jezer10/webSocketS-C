@@ -2,7 +2,7 @@ import socketio
 
 from aiohttp import web
 
-data={}
+rooms={}
 
 PORT=5000
 HOST='localhost'
@@ -14,41 +14,41 @@ sio.attach(app)
 
 @sio.event
 async def connect(sid,environment):
-
     print(sid,'connected')
+
 @sio.event
 async def disconnect(sid):
     print(sid,'disconnected')
 
 @sio.event
-def  begin_chat(sid,roomname):
-    if roomname in data:
-        print('ya existe la sala')
-        sio.enter_room(sid,room=roomname)
+async def  joinroom(sid,data):
+    print(data)
+    roomcode=data['roomcode']
+    sio.enter_room(sid,room=roomcode)
+    await sio.save_session(sid,{'username':data['username'],'room':roomcode})
+    await sio.emit('newmsg',{'username':data['username'],'sid':sid,'status':'join'},room=roomcode)
+    print(sio.rooms(sid))
 
-    else:
-        print('Creando nueva sala')
-        data[roomname]=[]
-        sio.enter_room(sid,room=roomname)
 @sio.event
-async def  exit_chat(sid,roomname):
-    sio.leave_room(sid,room=roomname)
+async def leaveroom(sid,roomname):
+    data=await sio.get_session(sid)
+    sio.leave_room(sid,roomname)
+    await sio.emit('newmsg',{'username':data['username'],'sid':sid,'status':'left'},room=roomname)
+
 
 @sio.event
 async def  message(sid,data):
     session= await sio.get_session(sid)
-
-    await sio.emit('newmsg',{'msg':data,'user':session['username'],'sid':sid},room=session['room'])
-
-
-@sio.event
-async def joinroom(sid,data):
-    print(sid+' '+data)
-    ar=data.split(',')
-    begin_chat(sid,ar[1])
-    await sio.save_session(sid, {'username': ar[0] ,'room':ar[1]})
+    await sio.emit('newmsg',{'msg':data,'username':session['username'],'sid':sid},room=session['room'])
 
 
+
+def countUsers(sid,roomname):
+    if roomname in rooms:
+        rooms[roomname].append(sid)
+    else:
+        rooms[roomname]=[]
+        rooms[roomname].append(sid)
 
 async def root(request):
     print(request.match_info.get('name',"Anonymous"))

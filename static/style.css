@@ -77,6 +77,37 @@ p{
     color: white;
     font-size: 0.8rem;
 }
+
+.leavechat{
+    text-align: center;
+    
+}
+.leavechat p{
+    font-size: 0.6rem;
+    font-family: 'Zen Dots', cursive;
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(215,26,26,0.5326505602240896) 0%, rgba(255,0,138,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.joinchat{
+    text-align: center;
+}
+.joinchat p{
+    font-size: 0.8rem;
+    font-family: 'Zen Dots', cursive;
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(26,215,86,1) 0%, rgba(0,255,124,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+#roomba{
+    display: flex;
+   align-items: center;
+   justify-content: center;
+   font-family: 'Ubuntu Mono', monospace;
+   color: white;
+}
 /*
 SCROLLBAR
 */
@@ -96,4 +127,10 @@ SCROLLBAR
 {
 	border-radius: 60px;
 	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.44, rgb(122,153,217)),color-stop(0.72, rgb(73,125,189)),color-stop(0.86, rgb(28,58,148)));
+}
+
+
+#onus{
+    color: greenyellow;
+    margin: 0.5rem;
 }

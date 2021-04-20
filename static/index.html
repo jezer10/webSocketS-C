@@ -12,14 +12,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <div class="container">
-
-        <div class="row">
+        <div class="row" id="vchat">
             <div class="col-4" id="joinroomform">
                 <div class="jform" v-if="!inroom">
                     <div class="jgroup">
@@ -40,19 +41,34 @@
             </div>
             <div class="col-4">
                 <div id="chat">
-                    <div class="row" id="chatheader"></div>
+                    <div class="row" id="chatheader">
+                        <div class="col" id="roomba" v-if="actualroom">
+                            ROOM CODE: {{actualroom}}
+                        </div>
+                        <div class="col" id="roomba" v-if="actualroom">
+                            <i class="bi bi-bullseye" id="onus"></i> {{uson}}
+                        </div>
+                        
+                    </div>
                     <div class="row" id="chatbox">
                         <div id="mensajebox">
-                            <div class="controlbox" v-for="m in messages">
-                                <div class="rmsgbox" v-if="checkmsg(m.sid)">
-                                    <div class="mensajer">{{m.msg}}</div>
-                                    <p>{{m.user}}</p>
+                            <div class="controlbox" v-for="c in chat">
+                                <div class="rmsgbox" v-if="checkmsg(c)">
+                                    <div class="mensajer">{{c.msg}}</div>
+                                    <p>{{c.username}}</p>
+                                </div>
+                                <div class="joinchat" v-else-if="c.status=='join'">
+                                    <p>"{{c.username}}" joined the chat</p>
+                                </div>
+                                <div class="leavechat" v-else-if="c.status=='left'">
+                                    <p>"{{c.username}}" left the chat</p>
                                 </div>
                                 <div class="smsgbox" v-else>
-                                    <div class="mensajes">{{ m.msg }}
+                                    <div class="mensajes">{{ c.msg }}
                                     </div>
-                                    <p>{{m.user}}</p>
+                                    <p>{{c.username}}</p>
                                 </div>
+                                
                             </div>
 
 

@@ -1,4 +1,4 @@
-const socket=io('http://localhost:5000/')
+const socket=io('http://127.0.0.1:5000')
 socket.on('connect',()=>sessionStorage.setItem('sid',socket.id))
 
 /*routes=[{path:'/chat',component:},{path:'/main',component:}]
@@ -7,37 +7,31 @@ const router = new VueRouter({
 })
 */
 
-Vue.component('rmsg',{
-    data:{
-        msj:'hola'
-    },
-    template:'<div class="rmsgbox"><div class="mensajer">{{ msj }}</div></div>'
-    
-})
-
-Vue.component('smsg',{
-    data:{
-        msj:'hola'
-    },
-    template:'<div class="smsgbox"><div class="mensajes">{{ msj }}</div></div>',
-    
-})
-
 new Vue({
-    el:'#chatbox',
+    el:'#vchat',
+    data:{
+        actualroom:'',
+        chat:[],
+        message:'',
+        inroom:false,
+        username:'',
+        roomcode:'',
+        maxl:6,
+        uson:0
+    },
     created(){
         socket.on('newmsg',(msg)=>{
-            this.messages.push(msg)
+            
+            this.chat.push(msg)
             if(this.checkmsg(msg.sid)){
                 this.msgSound(1)
             }else{
                 this.msgSound(2)
             }
+            var scroll=this.$el.querySelector('#chatbox')
+            console.log(scroll.clientHeight)
         })
-    },
-    
-    data:{
-        messages:[]
+        
     },
     methods:{
         msgSound(audio){
@@ -49,44 +43,31 @@ new Vue({
             }
         },
         checkmsg(s){
-            if (sessionStorage.getItem('sid')==s){
+            if (!s['msg']){
+                return false
+            }
+            if (sessionStorage.getItem('sid')==s['sid']){
                 return false
             }
             return true
-        }
-    }
-})
-
-new Vue({
-    el:'#msgbox',
-    data:{
-        message:''
-    },
-    methods:{
+        },
         sendmsg(){
+            if (this.message==''){
+                return
+            }
             socket.emit('message',this.message)
             this.message=''
-        }
-        
-    }
-})
-
-new Vue({
-    el:'#joinroomform',
-    data:{
-        inroom:false,
-        username:'',
-        roomcode:'',
-        maxl:6
-    },
-    methods:{
+        },
         joinroom(){
             this.inroom=true
-            socket.emit('joinroom',this.username+','+this.roomcode)
+            socket.emit('joinroom',{'username':this.username,'roomcode':this.roomcode})
+            this.actualroom=this.roomcode
         },
         leaveroom(){
             this.inroom=false
-            socket.emit('leaveroom')
+            socket.emit('leaveroom',this.roomcode)
+            this.chat=[]
+            this.actualroom=''
         },
         upprc(){
             this.roomcode=this.roomcode.toUpperCase()
@@ -94,15 +75,5 @@ new Vue({
                 this.roomcode=this.roomcode.substring(0,this.maxl)
             }
         }
-    },
-    filters:{
-        capitalize: function (value) {
-            if (!value) return ''
-            value = value.toString()
-            return value.toUpperCase()
-          }
     }
 })
-
-
-
