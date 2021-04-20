@@ -1,7 +1,7 @@
 #chatbox{
     height: 300px;
-    overflow-y: auto;
     background-image: url(assets/wallpaper.jpg);
+    overflow-y: auto;
 }
 #chatheader{
     background: linear-gradient(to bottom right, rgba(13,110,253,1) 35%, rgba(0,212,255,1) 100%);
@@ -21,12 +21,76 @@
 }
 
 
-#mensajer{
+.mensajer{
     background-color: white;
     padding:  0.4rem;
     border-radius: 0.3rem;
+    text-shadow: 1px 1px 0.5px rgba(152, 150, 207, 0.7);   
+    margin: 0.5rem;
+    display: inline-block;
+    hyphens: auto;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-align: left;
 }
-#mensajerbox{
+
+.mensajes{
+    background-color: #5dc1b9;
+    padding:  0.4rem;
+    border-radius: 0.3rem;
+    text-shadow: 1px 1px 0.5px rgba(152, 150, 207, 0.7);   
+    margin: 0.5rem;
+    display: inline-block;
+    hyphens: auto;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-align: right;
+
+}
+
+#mensajebox{
+    padding: 0.6rem;
+    font-family: 'Noto Sans JP', sans-serif;   
+}
+
+.rmsgbox{
+    text-align: left;
+}
+.smsgbox{
+    text-align: right;
+}
+
+.jgroup{
+    color: white;
     padding: 1rem;
-    font-family: 'Noto Sans JP', sans-serif;
+    text-align: center;
+}
+.jform{
+    margin: 1rem;
+    border-radius: 10px;
+    background: linear-gradient(to bottom right, rgba(2,0,36,1) 0%, rgba(121,9,92,1) 35%, rgba(0,212,255,1) 100%);
+    -webkit-box-shadow: 11px 14px 24px -4px rgba(0,0,0,0.45);
+    -moz-box-shadow: 11px 14px 24px -4px rgba(0,0,0,0.45);
+    box-shadow: 11px 14px 24px -4px rgba(0,0,0,0.45);
+}
+
+/*
+SCROLLBAR
+*/
+#chatbox::-webkit-scrollbar-track
+{
+	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#chatbox::-webkit-scrollbar
+{
+	width: 7px;
+	background-color: #F5F5F5;
+}
+
+#chatbox::-webkit-scrollbar-thumb
+{
+	border-radius: 60px;
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.44, rgb(122,153,217)),color-stop(0.72, rgb(73,125,189)),color-stop(0.86, rgb(28,58,148)));
 }
