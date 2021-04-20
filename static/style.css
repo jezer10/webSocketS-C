@@ -73,7 +73,10 @@
     -moz-box-shadow: 11px 14px 24px -4px rgba(0,0,0,0.45);
     box-shadow: 11px 14px 24px -4px rgba(0,0,0,0.45);
 }
-
+p{
+    color: white;
+    font-size: 0.8rem;
+}
 /*
 SCROLLBAR
 */

@@ -27,13 +27,33 @@ new Vue({
     el:'#chatbox',
     created(){
         socket.on('newmsg',(msg)=>{
-            this.messages.push({'msg':msg,name:''})
+            this.messages.push(msg)
+            if(this.checkmsg(msg.sid)){
+                this.msgSound(1)
+            }else{
+                this.msgSound(2)
+            }
         })
     },
+    
     data:{
         messages:[]
     },
     methods:{
+        msgSound(audio){
+            switch(audio){
+                case 1: new Audio('./assets/rmsg.mp3').play()
+                    break;
+                case 2:  new Audio('./assets/smsg.mp3').play()
+                    break;
+            }
+        },
+        checkmsg(s){
+            if (sessionStorage.getItem('sid')==s){
+                return false
+            }
+            return true
+        }
     }
 })
 
@@ -46,10 +66,8 @@ new Vue({
         sendmsg(){
             socket.emit('message',this.message)
             this.message=''
-        },
-        msgSound(){
-            new Audio('./assets/smsg.mp3').play()
         }
+        
     }
 })
 
@@ -68,6 +86,7 @@ new Vue({
         },
         leaveroom(){
             this.inroom=false
+            socket.emit('leaveroom')
         },
         upprc(){
             this.roomcode=this.roomcode.toUpperCase()

@@ -37,15 +37,17 @@ async def  exit_chat(sid,roomname):
 @sio.event
 async def  message(sid,data):
     session= await sio.get_session(sid)
-    print(session['username'])
-    await sio.emit('newmsg',data,room='chat_users')
+
+    await sio.emit('newmsg',{'msg':data,'user':session['username'],'sid':sid},room=session['room'])
 
 
 @sio.event
 async def joinroom(sid,data):
     print(sid+' '+data)
     ar=data.split(',')
-    begin_chat()
+    begin_chat(sid,ar[1])
+    await sio.save_session(sid, {'username': ar[0] ,'room':ar[1]})
+
 
 
 async def root(request):

@@ -21,8 +21,8 @@
 
         <div class="row">
             <div class="col-4" id="joinroomform">
-                <div class="jform"  v-if="!inroom">
-                    <div class="jgroup" >
+                <div class="jform" v-if="!inroom">
+                    <div class="jgroup">
                         <label for="username" class="form-label">Username</label>
                         <input class="form-control" id="username" v-model="username">
                     </div>
@@ -33,18 +33,28 @@
                     <div class="jgroup">
                         <button type="submit" class="btn btn-primary" v-on:click="joinroom()">Join Room</button>
                     </div>
-                    
+
                 </div>
-                    <button class="btn btn-primary" v-if="inroom" v-on:click="leaveroom()"><i class="bi bi-arrow-left-short"></i> Back </button>
+                <button class="btn btn-primary" v-if="inroom" v-on:click="leaveroom()"><i
+                        class="bi bi-arrow-left-short"></i> Back </button>
             </div>
             <div class="col-4">
                 <div id="chat">
                     <div class="row" id="chatheader"></div>
                     <div class="row" id="chatbox">
                         <div id="mensajebox">
-                            <div class="rmsgbox" v-for="m in messages">
-                                <div class="mensajer">{{m.msg}}</div>
+                            <div class="controlbox" v-for="m in messages">
+                                <div class="rmsgbox" v-if="checkmsg(m.sid)">
+                                    <div class="mensajer">{{m.msg}}</div>
+                                    <p>{{m.user}}</p>
+                                </div>
+                                <div class="smsgbox" v-else>
+                                    <div class="mensajes">{{ m.msg }}
+                                    </div>
+                                    <p>{{m.user}}</p>
+                                </div>
                             </div>
+
 
                         </div>
 
